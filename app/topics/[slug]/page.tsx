@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { topicBySlug, topics } from "../../content";
 import {
@@ -48,26 +49,27 @@ export default async function TopicPage({ params }: TopicPageProps) {
   return (
     <main className="topic-page">
       <header className="site-header topic-site-header">
-        <a className="brand" href="/" aria-label="返回 Language Atelier 首页">
+        <Link className="brand" href="/" aria-label="返回 Language Atelier 首页">
           <span className="brand-mark">LA</span>
           <span className="brand-divider" />
           <span className="brand-name">Language Atelier</span>
-        </a>
+        </Link>
         <nav className="main-nav topic-main-nav" aria-label="站内导航">
-          <a href="/#about">简介</a>
-          <a href="/#japanese">日语</a>
-          <a href="/#english">英语</a>
-          <a href="/#databricks">Databricks</a>
-          <a href="/#library">话题库</a>
+          <Link href="/#about">简介</Link>
+          <Link href="/#japanese">日语</Link>
+          <Link href="/#english">英语</Link>
+          <Link href="/#claude-architect">Claude Architect</Link>
+          <Link href="/#databricks">Databricks</Link>
+          <Link href="/#library">话题库</Link>
         </nav>
-        <a className="back-link" href="/#library">
+        <Link className="back-link" href="/#library">
           ← 返回话题库
-        </a>
+        </Link>
       </header>
 
       <div className="topic-shell">
         <div className="topic-breadcrumb">
-          <a href="/">首页</a>
+          <Link href="/">首页</Link>
           <span>/</span>
           <a href={`/#${topic.trackId}`}>{topic.trackNativeTitle}</a>
           <span>/</span>
@@ -87,7 +89,9 @@ export default async function TopicPage({ params }: TopicPageProps) {
                 ? "日"
                 : topic.trackId === "english"
                   ? "A"
-                  : "DB"}
+                  : topic.trackId === "claude-architect"
+                    ? "CA"
+                    : "DB"}
             </span>
             <div>
               <small>Learning topic</small>

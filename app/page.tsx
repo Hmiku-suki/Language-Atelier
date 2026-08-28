@@ -1,6 +1,10 @@
+import Link from "next/link";
 import { learningTracks } from "./content";
 
 const databricksTrack = learningTracks.find((track) => track.id === "databricks")!;
+const claudeTrack = learningTracks.find(
+  (track) => track.id === "claude-architect",
+)!;
 
 export default function Home() {
   return (
@@ -15,6 +19,7 @@ export default function Home() {
           <a href="#about">简介</a>
           <a href="#japanese">日语</a>
           <a href="#english">英语</a>
+          <a href="#claude-architect">Claude Architect</a>
           <a href="#databricks">Databricks</a>
           <a href="#library">话题库</a>
         </nav>
@@ -37,7 +42,8 @@ export default function Home() {
               一个专注于语言、架构表达与数据工程的个人学习空间。
             </p>
             <p className="hero-description">
-              目前收录日语高级沟通、英语软件架构表达，以及 Databricks 数据工程课程。
+              目前收录日语高级沟通、英语软件架构表达、Claude 架构师认证，
+              以及 Databricks 数据工程课程。
               每个话题以学习目标、表达、示例和练习组织，便于系统阅读与反复查阅。
             </p>
             <div className="hero-actions">
@@ -69,14 +75,71 @@ export default function Home() {
             <div className="focus-item">
               <span className="focus-number">03</span>
               <div>
+                <strong>Claude Architect</strong>
+                <p>CCAR-P · Professional certification</p>
+              </div>
+            </div>
+            <div className="focus-item">
+              <span className="focus-number">04</span>
+              <div>
                 <strong>Databricks</strong>
                 <p>Data engineering foundation to production</p>
               </div>
             </div>
             <p className="note-foot">
-              三条学习路径独立推进：语言表达、架构沟通与数据工程。
+              四条学习路径独立推进：语言表达、架构沟通、AI 解决方案架构与数据工程。
             </p>
           </aside>
+        </section>
+
+        <section
+          className="section-block claude-section"
+          id="claude-architect"
+        >
+          <div className="claude-feature-copy">
+            <p className="eyebrow">Certification path · 18 / 18</p>
+            <h2>Claude Architect</h2>
+            <p className="claude-lead">
+              Claude Certified Architect – Professional（CCAR-P）中文备考模块
+            </p>
+            <p className="claude-description">
+              依据 2026 年 7 月生效的官方考试指南，覆盖七大领域、英文关键词与中文解释，
+              并提供 3 道官方公开示例题和 63 道原创中英双语模拟题。
+            </p>
+            <div className="claude-actions">
+              <Link
+                className="primary-button claude-button"
+                href="/topics/ccar-p-000-exam-guide"
+              >
+                查看考试蓝图 <span aria-hidden="true">→</span>
+              </Link>
+              <a
+                className="text-link"
+                href={`/topics/${claudeTrack.latest.slug}`}
+              >
+                进入 63 题模拟题库
+              </a>
+            </div>
+          </div>
+          <div className="claude-domain-grid" aria-label="CCAR-P 七大考试领域">
+            {[
+              ["19%", "Integration", "集成"],
+              ["17%", "Solution Design & Architecture", "解决方案设计与架构"],
+              ["16%", "Evaluation, Testing & Optimization", "评估、测试与优化"],
+              ["14%", "Governance, Safety & Risk", "治理、安全与风险"],
+              ["14%", "Stakeholder & Lifecycle", "利益相关者与生命周期"],
+              ["13%", "Models, Prompting & Context", "模型、提示与上下文"],
+              ["07%", "Developer Productivity", "开发者生产力"],
+            ].map(([weight, title, translation]) => (
+              <div className="claude-domain" key={title}>
+                <span>{weight}</span>
+                <div>
+                  <strong>{title}</strong>
+                  <small>{translation}</small>
+                </div>
+              </div>
+            ))}
+          </div>
         </section>
 
         <section className="section-block databricks-section" id="databricks">
@@ -122,7 +185,7 @@ export default function Home() {
               <p className="eyebrow">Latest topics</p>
               <h2>最新话题</h2>
             </div>
-            <p>三条学习路径独立组织，并使用同一套可扩展的内容结构。</p>
+            <p>四条学习路径独立组织，并使用同一套可扩展的内容结构。</p>
           </div>
 
           <div className="latest-grid">

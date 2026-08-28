@@ -43,14 +43,82 @@ test("renders the Databricks learning section", async () => {
 
 test("renders the latest language topics without Notion links", async () => {
   const html = await render("/");
-  assert.match(html, /室温の感じ方が違うとき、相手を否定せず調整を提案する/);
-  assert.match(html, /Diagnosing Identity and Configuration Drift Across Integration Paths/);
-  assert.match(html, /\/topics\/jp-negotiate-room-temperature-adjustments/);
-  assert.match(html, /\/topics\/en-identity-configuration-drift-integration-paths/);
+  assert.match(html, /担当者が不在のとき、別の相手に確認を依頼する/);
+  assert.match(html, /Defining Data Freshness and Staleness Contracts/);
+  assert.match(html, /\/topics\/jp-confirm-with-alternate-contact-when-owner-absent/);
+  assert.match(html, /\/topics\/en-data-freshness-staleness-contracts/);
   assert.doesNotMatch(
     html,
     /https?:\/\/[^"'\s>]*notion\.(?:so|site)|app\.notion\.com/i,
   );
+});
+
+test("renders the Claude Architect certification module", async () => {
+  const html = await render("/");
+  assert.match(html, /Claude Certified Architect/);
+  assert.match(html, /Certification path · 18 \/ 18/);
+  assert.match(html, /Integration/);
+  assert.match(html, /63 道原创中英双语模拟题/);
+  assert.match(html, /\/topics\/ccar-p-000-exam-guide/);
+  assert.match(html, /\/topics\/ccar-p-017-bilingual-practice-bank/);
+  assert.doesNotMatch(html, /<a\b[^>]*href=["']https?:\/\//i);
+});
+
+test("renders the official CCAR-P exam blueprint", async () => {
+  const html = await render("/topics/ccar-p-000-exam-guide");
+  assert.match(html, /120 minutes/);
+  assert.match(html, /63 questions/);
+  assert.match(html, /US\$175/);
+  assert.match(html, /通过分.*720/);
+  assert.match(html, /Integration（集成）— 19%/);
+  assert.match(html, /Developer Productivity &amp; Operational Enablement/);
+  assert.match(html, /2026 年 7 月/);
+  assert.doesNotMatch(html, /<a\b[^>]*href=["']https?:\/\//i);
+});
+
+test("renders the three public official sample questions bilingually", async () => {
+  const html = await render("/topics/ccar-p-016-official-samples");
+  assert.match(html, /说明性示例题/);
+  assert.match(html, /不是正式考试题/);
+  assert.match(html, /Official sample · Domain 3 Integration/);
+  assert.match(html, /English/);
+  assert.match(html, /中文/);
+  assert.match(html, /Q03/);
+  assert.doesNotMatch(html, /<a\b[^>]*href=["']https?:\/\//i);
+});
+
+test("renders all 63 original bilingual CCAR-P practice questions", async () => {
+  const html = await render("/topics/ccar-p-017-bilingual-practice-bank");
+  assert.match(html, /不是正式考试原题或泄题/);
+  assert.match(html, /Q01/);
+  assert.match(html, /Q63/);
+  assert.match(html, /Answer \/ 答案/);
+  assert.match(html, /Rationale \(EN\)/);
+  assert.match(html, /解析（中文）/);
+  assert.equal(
+    new Set((html.match(/Q\d{2} · Domain/g) ?? []).map((item) => item.slice(0, 3)))
+      .size,
+    63,
+  );
+  assert.doesNotMatch(html, /<a\b[^>]*href=["']https?:\/\//i);
+});
+
+test("renders all 18 Claude certification units as internal pages", async () => {
+  const home = await render("/");
+  const paths = [
+    ...new Set(
+      [...home.matchAll(/href="(\/topics\/ccar-p-[^"]+)"/g)].map(
+        (match) => match[1],
+      ),
+    ),
+  ];
+
+  assert.equal(paths.length, 18);
+  for (const path of paths) {
+    const html = await render(path);
+    assert.match(html, /关键词|考试|示例题|模拟题/);
+    assert.doesNotMatch(html, /<a\b[^>]*href=["']https?:\/\//i);
+  }
 });
 
 test("renders the latest Japanese topic", async () => {

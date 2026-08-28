@@ -33,6 +33,7 @@ import { notionTopicContent20260825 } from "./notion-content-2026-08-25";
 import { notionTopicContent20260826 } from "./notion-content-2026-08-26";
 import { notionTopicContent20260827 } from "./notion-content-2026-08-27";
 import { notionTopicContent20260828 } from "./notion-content-2026-08-28";
+import { claudeCertificationContent } from "./claude-cert-content";
 import { databricksTopicContent } from "./databricks-content";
 
 export const notionTopicContent = {
@@ -136,6 +137,7 @@ export const notionTopicContent = {
   ...notionTopicContent20260826,
   ...notionTopicContent20260827,
   ...notionTopicContent20260828,
+  ...claudeCertificationContent,
   ...databricksTopicContent,
 } as const;
 

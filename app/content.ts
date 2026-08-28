@@ -1,3 +1,5 @@
+import { claudeCertificationTopics } from "./claude-cert-content";
+
 export type Topic = {
   slug: string;
   title: string;
@@ -14,7 +16,7 @@ export type LearningTrack = {
   nativeTitle: string;
   level: string;
   purpose: string;
-  accent: "sage" | "indigo" | "amber";
+  accent: "sage" | "indigo" | "terracotta" | "amber";
   latest: {
     slug: string;
     title: string;
@@ -296,6 +298,33 @@ export const learningTracks: LearningTrack[] = [
         description: "商务日语 · 代理确认、交付预期与期限说明",
       },
     ],
+  },
+  {
+    id: "claude-architect",
+    category: "technology",
+    symbol: "CA",
+    eyebrow: "Claude Architect",
+    title: "Claude 架构师认证",
+    nativeTitle: "CCAR-P",
+    level: "Professional · 18 units",
+    purpose:
+      "依据官方考试指南构建的中文备考路线，覆盖七大领域、英文关键词、公开示例题与 63 道原创双语模拟题。",
+    accent: "terracotta",
+    latest: {
+      slug: "ccar-p-017-bilingual-practice-bank",
+      title: "CCAR-P 双语模拟题库 · 63 题",
+      date: "2026.08.29",
+      objective:
+        "在 120 分钟内完成与官方题量一致、按七大领域权重分布的原创双语模拟题，并按 Domain 复盘架构决策。",
+      highlights: [
+        "7 domains · official blueprint",
+        "English + 中文",
+        "63 original practice questions",
+      ],
+      drill:
+        "严格计时 120 分钟完成 63 题；记录错题所属 Domain、遗漏的约束、正确原则与下次识别信号。",
+    },
+    topics: claudeCertificationTopics,
   },
   {
     id: "english",
