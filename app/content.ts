@@ -39,14 +39,14 @@ export const learningTracks: LearningTrack[] = [
       "从真实工作与生活场景出发，练习更准确、更成熟、也更容易被对方接受的表达方式。",
     accent: "sage",
     latest: {
-      slug: "jp-negotiate-room-temperature-adjustments",
-      title: "室温の感じ方が違うとき、相手を否定せず調整を提案する",
-      date: "2026.08.27",
+      slug: "jp-confirm-with-alternate-contact-when-owner-absent",
+      title: "担当者が不在のとき、別の相手に確認を依頼する",
+      date: "2026.08.28",
       objective:
-        "区分自己的体感、可观察事实与医学判断，在家人意见不同时先承认担忧，再通过风向、温度和衣物的小调整共同验证。",
-      highlights: ["体感", "一概には言えない", "いったん～て、それでも～なら"],
+        "说明原担当者不在的联系背景，限定询问范围、交付对象和希望期限，并为对方不负责或不了解预留自然出口。",
+      highlights: ["ご不在のようですので", "ご存じの範囲で", "〜であれば、〜だけでも"],
       drill:
-        "用约 60 秒协商宝宝房间的空调设置：先确认颈部和后背，调整风向并观察十分钟，再按结果调节温度或覆盖物。",
+        "写一条 180～250 字的 Teams 消息：向另一位客户确认三个 IF 的测试文件能否今天提供，并说明期限、影响和无法回答时的确认出口。",
     },
     topics: [
       {
@@ -289,6 +289,12 @@ export const learningTracks: LearningTrack[] = [
         date: "08.27",
         description: "生活日语 · 体感差异、婴儿室温与共同调整",
       },
+      {
+        slug: "jp-confirm-with-alternate-contact-when-owner-absent",
+        title: "担当者が不在のとき、別の相手に確認を依頼する",
+        date: "08.28",
+        description: "商务日语 · 代理确认、交付预期与期限说明",
+      },
     ],
   },
   {
@@ -303,14 +309,14 @@ export const learningTracks: LearningTrack[] = [
       "围绕架构评审、技术设计、故障分析和干系人沟通，建立更精确、更自然的资深架构师表达。",
     accent: "indigo",
     latest: {
-      slug: "en-identity-configuration-drift-integration-paths",
-      title: "Diagnosing Identity and Configuration Drift Across Integration Paths",
-      date: "2026.08.27",
+      slug: "en-data-freshness-staleness-contracts",
+      title: "Defining Data Freshness and Staleness Contracts",
+      date: "2026.08.28",
       objective:
-        "Establish request equivalence across integration paths by comparing effective identity, authorization, endpoint, headers, encoding, and date context before attributing the cause.",
-      highlights: ["request equivalence", "effective identity", "configuration drift"],
+        "Define data freshness as a measurable end-to-end contract across source, ingestion, processing, cache and presentation boundaries.",
+      highlights: ["data freshness", "maximum acceptable data age", "freshness SLO"],
       drill:
-        "Give a 60-second explanation of why the same OData query can return records in curl but an empty feed in iFlow, and define the evidence you would compare.",
+        "Give a 60-second response to a stakeholder whose ERP update has not appeared on the dashboard, separating correctness from freshness and tracing each timestamp.",
     },
     topics: [
       {
@@ -558,6 +564,12 @@ export const learningTracks: LearningTrack[] = [
         title: "Diagnosing Identity and Configuration Drift Across Integration Paths",
         date: "08.27",
         description: "Integration architecture · Identity, authorization and request-context drift",
+      },
+      {
+        slug: "en-data-freshness-staleness-contracts",
+        title: "Defining Data Freshness and Staleness Contracts",
+        date: "08.28",
+        description: "Data architecture · Freshness SLOs, pipeline lag and stale-state signaling",
       },
     ],
   },
