@@ -73,6 +73,9 @@ test("renders the official CCAR-P exam blueprint", async () => {
   assert.match(html, /Integration（集成）— 19%/);
   assert.match(html, /Developer Productivity &amp; Operational Enablement/);
   assert.match(html, /2026 年 7 月/);
+  assert.match(html, /考纲到课程的完整映射/);
+  assert.match(html, /八周备考计划/);
+  assert.match(html, /场景题通用答题框架/);
   assert.doesNotMatch(html, /<a\b[^>]*href=["']https?:\/\//i);
 });
 
@@ -84,6 +87,8 @@ test("renders the three public official sample questions bilingually", async () 
   assert.match(html, /English/);
   assert.match(html, /中文/);
   assert.match(html, /Q03/);
+  assert.match(html, /三道样题的逐层解题方法/);
+  assert.match(html, /干扰项识别/);
   assert.doesNotMatch(html, /<a\b[^>]*href=["']https?:\/\//i);
 });
 
@@ -95,12 +100,30 @@ test("renders all 63 original bilingual CCAR-P practice questions", async () => 
   assert.match(html, /Answer \/ 答案/);
   assert.match(html, /Rationale \(EN\)/);
   assert.match(html, /解析（中文）/);
+  assert.match(html, /完整模拟考试方法/);
+  assert.match(html, /Domain 错题诊断/);
   assert.equal(
     new Set((html.match(/Q\d{2} · Domain/g) ?? []).map((item) => item.slice(0, 3)))
       .size,
     63,
   );
   assert.doesNotMatch(html, /<a\b[^>]*href=["']https?:\/\//i);
+});
+
+test("renders detailed tutorials for all 15 CCAR-P teaching units", async () => {
+  for (let unit = 1; unit <= 15; unit += 1) {
+    const prefix = `ccar-p-${String(unit).padStart(3, "0")}-`;
+    const home = await render("/");
+    const path = [...home.matchAll(/href="(\/topics\/ccar-p-[^"]+)"/g)]
+      .map((match) => match[1])
+      .find((candidate) => candidate.includes(prefix));
+
+    assert.ok(path, `missing teaching unit ${unit}`);
+    const html = await render(path);
+    assert.match(html, /深入教程/);
+    assert.match(html, /考试常见陷阱/);
+    assert.match(html, /练习参考答案/);
+  }
 });
 
 test("renders all 18 Claude certification units as internal pages", async () => {

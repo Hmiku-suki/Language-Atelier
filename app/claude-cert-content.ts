@@ -3,6 +3,7 @@ import {
   claudePracticeBankMarkdown,
   officialSamplesMarkdown,
 } from "./claude-practice-bank";
+import { detailedClaudeTutorials } from "./claude-cert-tutorials";
 
 type Lesson = {
   title: string;
@@ -13,7 +14,7 @@ type Lesson = {
   drill: string;
 };
 
-function renderLesson(lesson: Lesson) {
+function renderLesson(slug: string, lesson: Lesson) {
   return `## 学习目标
 ${lesson.objective}
 
@@ -27,7 +28,9 @@ ${lesson.decisions.map((item) => `- ${item}`).join("\n")}
 ${lesson.glossary.map(([en, zh]) => `- **${en}**：${zh}`).join("\n")}
 
 ## 小练习
-${lesson.drill}`;
+${lesson.drill}
+
+${detailedClaudeTutorials[slug] ?? ""}`;
 }
 
 export const claudeCertificationTopics: Topic[] = [
@@ -270,7 +273,50 @@ const examGuideMarkdown = `## 认证与考试概览
 首次未通过后等待 14 天，第二次后 30 天，第三次后 90 天；滚动 12 个月最多 4 次。正式考试内容受保密协议约束，复制、传播或使用泄露题目不符合认证规则。
 
 ## 本模块怎么使用
-先完成 001–015 课程，再做 016 的 3 道官方公开示例题，最后在 120 分钟内完成 017 的 63 道原创双语模拟题。错题按 Domain 归类，不背选项，必须能说明为什么其他选项不成立。`;
+先完成 001–015 课程，再做 016 的 3 道官方公开示例题，最后在 120 分钟内完成 017 的 63 道原创双语模拟题。错题按 Domain 归类，不背选项，必须能说明为什么其他选项不成立。
+
+## 考纲到课程的完整映射
+- **Domain 1 · Integration（集成）**：006 企业集成、007 工具安全、008 RAG；同时在 010 学习生产可观测性。
+- **Domain 2 · Solution Design & Architecture（解决方案设计与架构）**：001 需求发现、002 架构模式、003 多代理编排、015 综合案例。
+- **Domain 3 · Evaluation, Testing & Optimization（评估、测试与优化）**：009 评估体系、010 测试优化与可观测性，并在 015 完成端到端验证设计。
+- **Domain 4 · Governance, Safety & Risk Management（治理、安全与风险管理）**：007 工具信任边界、011 安全治理、012 合规伦理。
+- **Domain 5 · Stakeholder Communication & Lifecycle Management（利益相关者沟通与生命周期管理）**：001 业务问题定义、013 沟通与生命周期、015 上线和运营方案。
+- **Domain 6 · Claude Models, Prompting & Context Engineering（模型、提示与上下文工程）**：004 模型选择、005 提示与上下文、008 检索上下文、010 token 与缓存观测。
+- **Domain 7 · Developer Productivity & Operational Enablement（开发者生产力与运营赋能）**：014 Claude Code 与团队赋能、015 生产运营。
+
+## 四阶段学习路径
+### 阶段一：先建立架构判断
+完成 001–003。每遇到一个需求，先回答：真正的业务目标是什么？规则能否用确定性代码表达？是否真的需要 agent？多代理带来的收益是否大于协调成本？
+
+### 阶段二：掌握 Claude 平台能力
+完成 004–008。把 **model selection（模型选择）**、**system prompt（系统提示）**、**context window（上下文窗口）**、**prompt caching（提示缓存）**、**tool use（工具使用）**、**MCP** 与 **RAG** 放进同一套端到端数据流里理解。
+
+### 阶段三：建立生产门禁
+完成 009–014。先定义 **success criteria（成功标准）**，再设计离线评估、在线指标、对抗测试、安全护栏、人工升级、审计、SLA、交接与退役条件。
+
+### 阶段四：综合演练
+完成 015–017。先用综合案例写一页架构说明，再分析官方公开样题，最后严格计时完成模拟题。复盘时必须写出题干中的约束、正确选项解决的根因，以及每个干扰项为什么不充分。
+
+## 八周备考计划
+1. **第 1 周**：000–001。理解蓝图、候选人画像、发现访谈、范围和成功指标。
+2. **第 2 周**：002–003。比较 workflow、augmented LLM、agent 与 multi-agent，练习任务分解和失败隔离。
+3. **第 3 周**：004–005。模型路由、提示模板、上下文预算、缓存、结构化输出和 Skills。
+4. **第 4 周**：006–008。API、MCP、CLI、agent-to-agent、工具 schema、权限、提示注入与 RAG。
+5. **第 5 周**：009–010。评估数据集、混合评分、回归、A/B、延迟、成本、日志、追踪和告警。
+6. **第 6 周**：011–012。分层护栏、HITL、fail closed、隐私、合规、公平性和透明度。
+7. **第 7 周**：013–015。SLA、架构决策记录、版本治理、Claude Code 推广和综合方案。
+8. **第 8 周**：016–017。先做官方公开示例，再做两轮 63 题模拟；第二轮只重做错题和低置信题。
+
+## 场景题通用答题框架
+1. **圈约束**：数据敏感度、动作可逆性、实时性、准确率、预算、合规和组织边界。
+2. **找根因**：区分检索、模型推理、提示、工具、权限、数据新鲜度和编排问题，不被表面症状带走。
+3. **选最小充分架构**：固定流程优先 workflow；开放式、需要动态选工具的任务才使用 agent；无证据时不要先拆成多代理。
+4. **把确定性控制移出模型**：权限、金额阈值、schema、状态转换、幂等和审计由代码或策略层执行。
+5. **为高风险动作设置 HITL**：低置信、高影响、不可逆或受监管操作需要人工批准，并定义超时和拒绝路径。
+6. **要求可验证证据**：离线评估、端到端沙箱、生产指标、分布式追踪、版本记录、灰度和回滚共同构成上线依据。
+
+## 完成标准
+完成本模块后，你应能在不看答案的情况下：为一个企业 Claude 方案画出组件、数据流和信任边界；解释模型、RAG、工具与编排的取舍；定义质量、延迟、成本和安全门禁；设计人工升级与故障降级；并用中英文准确说明至少 80 个核心术语。`;
 
 const officialSamplesIntro = `## 题目说明
 本页收录官方考试指南公开的 **3 道 illustrative sample questions（说明性示例题）** 的双语等义整理与解析。它们用于展示命题风格，不是正式考试题，也不代表完整题库。正式考试内容受保密协议保护。
@@ -279,7 +325,26 @@ const officialSamplesIntro = `## 题目说明
 ${officialSamplesMarkdown}
 
 ## 复盘方法
-每题先圈出风险、约束和真正被问的决策，再使用 **least privilege（最小权限）**、**prompt caching（提示缓存）**、**retrieval/indexing path（检索/索引链路）** 等原则排除表面正确但没有解决根因的选项。`;
+每题先圈出风险、约束和真正被问的决策，再使用 **least privilege（最小权限）**、**prompt caching（提示缓存）**、**retrieval/indexing path（检索/索引链路）** 等原则排除表面正确但没有解决根因的选项。
+
+## 三道样题的逐层解题方法
+### Sample 1 · Tool security（工具安全）
+题干的核心不是“如何更好地记录危险操作”，而是代理拥有超出任务所需的高影响能力。第一层控制应是缩小 **capability surface（能力面）**：移除不必要的删除工具或危险权限。日志只能事后追踪，提示确认仍可能被模型绕过，换更强模型也不会改变权限边界。考试中看到“只读任务却拥有写入/删除能力”，优先考虑 **least privilege（最小权限）** 和工具白名单。
+
+### Sample 2 · Prompt caching（提示缓存）
+题干强调大量请求共享长而稳定的说明，只在尾部附加用户输入。正确优化方向是把稳定前缀放在前面并设置缓存边界，使后续请求复用已处理的前缀。仅压缩用户输入无法消除重复处理的大块静态上下文；并行化也不会降低单次重复 token 成本。考试中看到“相同长前缀、重复请求、成本或首 token 延迟”，应联想到 **stable prefix（稳定前缀）** 和 **cache breakpoint（缓存断点）**。
+
+### Sample 3 · RAG freshness（RAG 新鲜度）
+症状是来源文档已更新，但回答仍引用旧内容。应沿 **ingestion and indexing path（采集与索引链路）** 检查：变更是否被检测、文档是否重新切分和嵌入、旧 chunk 是否删除、索引是否刷新、查询是否命中新版本。直接改提示或换模型不会让旧索引自动更新。考试中看到“知识库已变但回答陈旧”，先检查数据管道和版本，而不是先调模型。
+
+## 干扰项识别
+- **只改善观测，不降低风险**：增加日志、仪表盘或告警，却没有缩小权限或阻止危险动作。
+- **用模型能力替代系统控制**：换更强模型，却没有修复 schema、授权、索引或确定性业务规则。
+- **优化错误层级**：延迟来自重复长前缀，却只压缩短用户输入；陈旧答案来自索引，却只改提示。
+- **过度架构**：问题可由一个明确控制解决，却引入多代理、复杂编排或新基础设施。
+
+## 考场阅读顺序
+先读最后一句，确认题目问的是 **BEST（最佳）**、**FIRST（首先）**、**MOST secure（最安全）** 还是 **MOST cost-effective（最具成本效益）**；再回到题干标记约束；最后逐项判断它解决的是根因、缓解症状，还是引入了新的风险。多选题只选各自独立必要的控制，不因为两个选项“都看起来不错”就一起选择。`;
 
 const practiceBankIntro = `## 使用说明
 这是依据官方 7 个 Domain 和占比原创编写的 **63 题 bilingual practice bank（双语模拟题库）**，不是正式考试原题或泄题。题量与正式考试一致，建议严格计时 120 分钟。
@@ -290,14 +355,38 @@ const practiceBankIntro = `## 使用说明
 ${claudePracticeBankMarkdown}
 
 ## 评分与复盘
-按 63 题计算原始正确率只用于学习诊断，不能换算为官方 100–1000 量表分。逐题记录错误 Domain、误判的约束、正确原则和下一次识别信号。`;
+按 63 题计算原始正确率只用于学习诊断，不能换算为官方 100–1000 量表分。逐题记录错误 Domain、误判的约束、正确原则和下一次识别信号。
+
+## 完整模拟考试方法
+1. 使用 120 分钟倒计时，前 90 分钟完成首轮，20 分钟复查标记题，最后 10 分钟核对多选题与遗漏。
+2. 首轮每题记录 **confidence（置信度）**：高、中、低。超过两分钟仍无法决定时先标记，避免单题吞噬全局时间。
+3. 不查资料、不暂停计时。模拟结束后再打开解析，保留真实的知识缺口和时间压力证据。
+4. 多选题先判断每个选项是否独立满足题干，再检查是否把“有帮助”误当成“必要且最佳”。
+5. 第二轮只做错题与低置信题，但必须遮住原答案，并用一句话复述关键约束后再选。
+
+## Domain 错题诊断
+- **Domain 1 错题多**：回到 006–008，重点复习 API/MCP 边界、工具权限、渐进式发现、RAG 新鲜度和可观测性。
+- **Domain 2 错题多**：回到 001–003 与 015，练习把业务问题转成最小充分架构，以及 workflow、agent 和 multi-agent 的选择。
+- **Domain 3 错题多**：回到 009–010，区分指标、数据集、评分器、实验、根因诊断和生产门禁。
+- **Domain 4 错题多**：回到 007、011–012，复习纵深防御、最小权限、HITL、fail closed、隐私和公平性。
+- **Domain 5 错题多**：回到 001、013、015，练习需求澄清、SLA、决策记录、交接、监控和退役。
+- **Domain 6 错题多**：回到 004–005，复习模型选择、提示层次、上下文预算、缓存和结构化输出。
+- **Domain 7 错题多**：回到 014–015，复习 Claude Code 权限、共享配置、hooks、推广门禁和运营响应。
+
+## 原始正确率的学习解释
+- **低于 70%**：先暂停刷题，按 Domain 重学核心教程，并为每个错题写出根因和反例。
+- **70%–79%**：知识框架已形成，但场景约束识别不稳定；集中复习低置信题和干扰项模式。
+- **80% 及以上**：继续强化限时决策、英文题干阅读和多选题边界；这仍不是官方分数或通过保证。
+
+## 双语复盘卡片
+每道错题制作一张卡片，正面写英文信号词与场景，例如 **stale retrieval results（陈旧检索结果）**；背面写根因、首选控制、不能解决根因的干扰项，以及对应课程页。目标不是背选项，而是看到英文关键词后立即恢复完整的架构推理链。`;
 
 export const claudeCertificationContent = {
   "ccar-p-000-exam-guide": { title: "CCAR-P 官方考试蓝图与学习路线", sourceId: "official-ccar-p-exam-guide-v1-2026-07", markdown: examGuideMarkdown },
   ...Object.fromEntries(
     Object.entries(lessons).map(([slug, lesson]) => [
       slug,
-      { title: lesson.title, sourceId: `ccar-p-original-${slug}`, markdown: renderLesson(lesson) },
+      { title: lesson.title, sourceId: `ccar-p-original-${slug}`, markdown: renderLesson(slug, lesson) },
     ]),
   ),
   "ccar-p-016-official-samples": { title: "官方公开示例题 · 中英文对照", sourceId: "official-ccar-p-samples-v1-2026-07", markdown: officialSamplesIntro },
